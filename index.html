@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Sistema de Gerenciamento de Tarefas</title>
 </head>
 <body>
+    <header>Gerenciamento de Tarefas</header>
+    <main>
+        <form>
+            <div>
+                <label for="tarefa">Tarefa</label>
+                <input id="tarefa" type="text">
+            </div>
+            <div>
+                <label for="data">Data de Conclusão</label>
+                <input id="data" type="date">
+            </div>
+            <input id="submit" type="submit" value="Adicionar">
+        </form>
+        <table>
+            <tr>
+              <th>Tarefa</th>
+              <th>Data de Conclusão</th>
+            </tr>
+            <tr>
+              <td>Comer maça</td>
+              <td>22/05/1998</td>
+            </tr>
+          </table> 
+    </main>
+    <footer></footer>
     <script src="script.js"></script>
 </body>
 </html>
