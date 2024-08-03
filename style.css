@@ -67,6 +67,7 @@ input {
 
 form {
     width: 50vw;
+    max-width: 400px;
     padding: 1.8rem;
     display: flex;
     flex-direction: column;
@@ -95,12 +96,9 @@ form > div {
 /* TABLE  */
 
 table {
+    max-width: 1000px;
     width: 100%;
     border: 1px solid black;
-}
-
-th {
-    width: 50%;
 }
 
 td {
@@ -116,4 +114,59 @@ td, th {
     padding: 1.2rem;
     font-size: 1.6rem;
     border: 1px solid black;
+}
+
+#thOpcoes {
+    width: 25%;
+}
+
+#thTarefa {
+    width: 50%;
+}
+
+#thOpcoes {
+    width: 25%;
+}
+
+.tdOpcoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border: none;
+}
+
+.opcoes {
+    font-size: 1.6rem;
+}
+
+.opcoes:hover {
+    cursor: pointer;
+}
+
+.tdTarefa {
+    text-align: start;
+}
+
+.deletar:hover {
+    color: red;
+}
+
+.editar:hover {
+    color: blue;
+}
+
+.toast {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(22, 161, 22);
+    z-index: 10;
+    padding: 40px 20px;
+    width: 20vw;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 1.8rem;
+    color: white;
 }
