@@ -8,6 +8,9 @@ const deletar = document.querySelector(".deletar");
 
 let tarefas = []
 
+let modoAtualizacao = false
+let idTarefaAtualizada;
+
 renderizarTabela();
 
 function renderizarTabela() {
@@ -19,11 +22,11 @@ function renderizarTabela() {
     let thTarefa = document.createElement("th");
     thTarefa.textContent = "Tarefa";
     thTarefa.id = "thTarefa";
-    
+
     let thData = document.createElement("th");
     thData.textContent = "Data de Conclusão";
     thData.id = "thData";
-    
+
     let thOpcoes = document.createElement("th");
     thOpcoes.textContent = "Opções";
     thOpcoes.id = "thOpcoes";
@@ -55,6 +58,7 @@ function renderizarTabela() {
 
         editar.textContent = "Editar";
         editar.className = "opcoes editar"
+        editar.id = e.id
 
         tdTarefa.appendChild(tarefaValor);
         tdTarefa.className = "tdTarefa";
@@ -73,15 +77,11 @@ function renderizarTabela() {
             renderizarTabela();
         })
 
-        editar.addEventListener('click', (e) => {
-            let tarefa = document.getElementById(`${tr.id}`)
-            const id = tarefa.id;
-            const tarefaNoArray = tarefas.find((e) => e.id == id)
-
-            tarefa.value = tarefaNoArray.tarefa
-            data.value = tarefaNoArray.data
-
-            tarefaAtualizado.id = tarefaNoArray.id
+        editar.addEventListener('click', (f) => {
+            modoAtualizacao = true;
+            idTarefaAtualizada = f.id;
+            inpTarefa.value = e.tarefa;
+            inpData.value = e.data;
         })
 
         // ------------------------------------
@@ -89,7 +89,7 @@ function renderizarTabela() {
         tr.appendChild(tdTarefa);
         tr.appendChild(tdData);
         tr.appendChild(tdOpcoes);
-        tr.id = tarefas[tarefas.length - 1].id
+        tr.id = e.id
         table.appendChild(tr);
     })
 
@@ -106,18 +106,23 @@ function renderizarToast() {
     }, 3000);
 }
 
-function editar(id) {
-
-}
-
-function adicionarTarefa() {
-    let tarefa = {
-        id: Math.floor((Math.random() * 10000) + 1),
-        tarefa: inpTarefa.value,
-        data: inpData.value
+function adicionarTarefa(id) {
+    if (modoAtualizacao) {
+        let tarefa = {
+            id: id,
+            tarefa: inpTarefa.value,
+            data: inpData.value
+        }
+        const index = tarefas.findIndex((e) => e.id = id)
+        tarefas.splice(index, 1, tarefa)
+    } else {
+        let tarefa = {
+            id: Math.floor((Math.random() * 10000) + 1),
+            tarefa: inpTarefa.value,
+            data: inpData.value
+        }
+        tarefas.push(tarefa)
     }
-
-    tarefas.push(tarefa)
 
     inpTarefa.value = "";
     inpData.value = "";
