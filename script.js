@@ -4,14 +4,40 @@ const inpTarefa = document.querySelector("#tarefa");
 const inpData = document.querySelector("#data");
 const form = document.querySelector("#form");
 const submit = document.querySelector("#submit");
+const deletar = document.querySelector(".deletar");
 
 let tarefas = []
 
 renderizarTabela();
 
 function renderizarTabela() {
-    tarefas.forEach(() => {
+
+    table.innerHTML = "";
+
+    let trHead = document.createElement("tr");
+
+    let thTarefa = document.createElement("th");
+    thTarefa.textContent = "Tarefa";
+    thTarefa.id = "thTarefa";
+    
+    let thData = document.createElement("th");
+    thData.textContent = "Data de Conclusão";
+    thData.id = "thData";
+    
+    let thOpcoes = document.createElement("th");
+    thOpcoes.textContent = "Opções";
+    thOpcoes.id = "thOpcoes";
+
+    trHead.appendChild(thTarefa);
+    trHead.appendChild(thData);
+    trHead.appendChild(thOpcoes);
+
+    table.appendChild(trHead)
+
+
+    tarefas.forEach((e) => {
         let tr = document.createElement("tr");
+        tr.className = "content"
 
         let tdTarefa = document.createElement("td");
         let tdData = document.createElement("td");
@@ -20,11 +46,12 @@ function renderizarTabela() {
         let deletar = document.createElement("div");
         let editar = document.createElement("div");
 
-        const tarefaValor = document.createTextNode(tarefas[tarefas.length - 1].tarefa);
-        const dataValor = document.createTextNode(tarefas[tarefas.length - 1].data);
+        const tarefaValor = document.createTextNode(e.tarefa);
+        const dataValor = document.createTextNode(e.data);
 
         deletar.textContent = "Deletar";
         deletar.className = "opcoes deletar"
+        deletar.id = e.id
 
         editar.textContent = "Editar";
         editar.className = "opcoes editar"
@@ -40,18 +67,20 @@ function renderizarTabela() {
 
         // ------------------------------------
 
-        deletar.addEventListener('click', () => {
-            document.getElementById(id).remove()
+        deletar.addEventListener('click', (e) => {
+            let idLivroDeletado = tarefas.findIndex((t) => t.id == e.target.id)
+            tarefas.splice(idLivroDeletado, 1);
+            renderizarTabela();
         })
 
         editar.addEventListener('click', (e) => {
             let tarefa = document.getElementById(`${tr.id}`)
             const id = tarefa.id;
             const tarefaNoArray = tarefas.find((e) => e.id == id)
-    
+
             tarefa.value = tarefaNoArray.tarefa
             data.value = tarefaNoArray.data
-    
+
             tarefaAtualizado.id = tarefaNoArray.id
         })
 
@@ -62,9 +91,9 @@ function renderizarTabela() {
         tr.appendChild(tdOpcoes);
         tr.id = tarefas[tarefas.length - 1].id
         table.appendChild(tr);
-
-        deletarTarefa(tr.id);
     })
+
+    console.log(tarefas)
 }
 
 function renderizarToast() {
@@ -77,17 +106,13 @@ function renderizarToast() {
     }, 3000);
 }
 
-function deletarTarefa(id) {
-    
-}
-
 function editar(id) {
-    
+
 }
 
 function adicionarTarefa() {
     let tarefa = {
-        id: Math.floor((Math.random() * 1000) + 1),
+        id: Math.floor((Math.random() * 10000) + 1),
         tarefa: inpTarefa.value,
         data: inpData.value
     }
@@ -100,7 +125,8 @@ function adicionarTarefa() {
 
 submit.addEventListener('click', (e) => {
     e.preventDefault();
-    
+
     adicionarTarefa();
     renderizarTabela();
+    renderizarToast();
 });
