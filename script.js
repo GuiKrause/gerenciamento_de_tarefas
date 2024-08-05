@@ -9,6 +9,7 @@ const deletar = document.querySelector(".deletar");
 let tarefas = []
 
 let modoAtualizacao = false
+
 let idTarefaAtualizada;
 
 renderizarTabela();
@@ -79,7 +80,7 @@ function renderizarTabela() {
 
         editar.addEventListener('click', (f) => {
             modoAtualizacao = true;
-            idTarefaAtualizada = f.id;
+            idTarefaAtualizada = f.target.id;
             inpTarefa.value = e.tarefa;
             inpData.value = e.data;
         })
@@ -113,7 +114,7 @@ function adicionarTarefa(id) {
             tarefa: inpTarefa.value,
             data: inpData.value
         }
-        const index = tarefas.findIndex((e) => e.id = id)
+        let index = tarefas.findIndex((e) => e.id == id);
         tarefas.splice(index, 1, tarefa)
     } else {
         let tarefa = {
@@ -124,6 +125,7 @@ function adicionarTarefa(id) {
         tarefas.push(tarefa)
     }
 
+    modoAtualizacao = false;
     inpTarefa.value = "";
     inpData.value = "";
 }
@@ -131,7 +133,7 @@ function adicionarTarefa(id) {
 submit.addEventListener('click', (e) => {
     e.preventDefault();
 
-    adicionarTarefa();
+    adicionarTarefa(idTarefaAtualizada);
     renderizarTabela();
     renderizarToast();
 });
