@@ -8,10 +8,11 @@ const deletar = document.querySelector(".deletar");
 const span = document.querySelector(".span");
 const spanTarefa = document.querySelector("#spanTarefa");
 const spanData = document.querySelector("#spanData");
-
-// let tarefas = []
+const qtdTarefas = document.querySelector("#qtdTarefas");
 
 let tarefasJson = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+let quantidade_tarefas = tarefasJson.length || 0;
 
 let modoAtualizacao = false
 
@@ -25,6 +26,8 @@ renderizarTabela();
 function renderizarTabela() {
 
     table.innerHTML = "";
+
+    qtdTarefas.textContent = `Quantidade de tarefas: ${quantidade_tarefas}`
 
     let trHead = document.createElement("tr");
 
@@ -84,6 +87,7 @@ function renderizarTabela() {
             tarefasJson.splice(idLivroDeletado, 1);
             let tarefasString = JSON.stringify(tarefasJson)
             localStorage.setItem("tarefas", tarefasString);
+            quantidade_tarefas = tarefasJson.length
             renderizarTabela();
             renderizarToast("Removido com sucesso!");
         })
@@ -142,6 +146,7 @@ function adicionarTarefa(id) {
         tarefasJson.splice(index, 1, tarefa)
         let tarefasString = JSON.stringify(tarefasJson)
         localStorage.setItem("tarefas", tarefasString)
+        quantidade_tarefas = tarefasJson.length
         renderizarTabela();
         renderizarToast("Atualizado com sucesso!");
     } else {
@@ -156,6 +161,7 @@ function adicionarTarefa(id) {
         tarefasJson.push(tarefa)
         let tarefasString = JSON.stringify(tarefasJson)
         localStorage.setItem("tarefas", tarefasString)
+        quantidade_tarefas = tarefasJson.length
         renderizarTabela();
         renderizarToast("Cadastrado com sucesso!");
     }

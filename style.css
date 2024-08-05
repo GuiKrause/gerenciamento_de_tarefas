@@ -195,3 +195,7 @@ span {
 .hidden {
     visibility: hidden;
 }
+
+#qtdTarefas {
+    font-size: 1.8rem;
+}
