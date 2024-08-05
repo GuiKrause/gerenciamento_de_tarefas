@@ -148,12 +148,24 @@ td, th {
     text-align: start;
 }
 
+.deletar {
+    padding: 8px;
+}
+
+.editar {
+    padding: 8px;
+}
+
 .deletar:hover {
-    color: red;
+    color: white;
+    background-color: red;
+    border-radius: 15px;
 }
 
 .editar:hover {
-    color: blue;
+    color: white;
+    background-color: blue;
+    border-radius: 15px;
 }
 
 .toast {
@@ -169,4 +181,17 @@ td, th {
     right: 50px;
     font-size: 1.8rem;
     color: white;
+}
+
+span {
+    color: red;
+    font-size: 1.2rem;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
 }

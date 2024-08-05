@@ -5,6 +5,9 @@ const inpData = document.querySelector("#data");
 const form = document.querySelector("#form");
 const submit = document.querySelector("#submit");
 const deletar = document.querySelector(".deletar");
+const span = document.querySelector(".span");
+const spanTarefa = document.querySelector("#spanTarefa");
+const spanData = document.querySelector("#spanData");
 
 // let tarefas = []
 
@@ -13,6 +16,9 @@ let tarefasJson = JSON.parse(localStorage.getItem("tarefas")) || [];
 let modoAtualizacao = false
 
 let idTarefaAtualizada;
+
+let tarefaVazio = false
+let dataVazio = false
 
 renderizarTabela();
 
@@ -39,7 +45,6 @@ function renderizarTabela() {
     trHead.appendChild(thOpcoes);
 
     table.appendChild(trHead)
-
 
     tarefasJson.forEach((e) => {
         let tr = document.createElement("tr");
@@ -80,6 +85,7 @@ function renderizarTabela() {
             let tarefasString = JSON.stringify(tarefasJson)
             localStorage.setItem("tarefas", tarefasString);
             renderizarTabela();
+            renderizarToast("Removido com sucesso!");
         })
 
         editar.addEventListener('click', (f) => {
@@ -101,9 +107,12 @@ function renderizarTabela() {
     console.log(tarefasJson)
 }
 
-function renderizarToast() {
+function renderizarToast(texto) {
+    if (tarefaVazio || dataVazio) {
+        return
+    }
     let toast = document.createElement("div");
-    toast.textContent = "Cadastrado com sucesso!";
+    toast.textContent = texto;
     toast.className = "toast";
     main.appendChild(toast)
     setTimeout(() => {
@@ -112,7 +121,18 @@ function renderizarToast() {
 }
 
 function adicionarTarefa(id) {
+    if (inpTarefa.value == "") {
+        tarefaVazio = true
+        campoTarefaVazio()
+    }
+    if (inpData.value.length == 0) {
+        dataVazio = true
+        campoDataVazio()
+    }
     if (modoAtualizacao) {
+        if (tarefaVazio || dataVazio) {
+            return
+        }
         let tarefa = {
             id: id,
             tarefa: inpTarefa.value,
@@ -122,8 +142,12 @@ function adicionarTarefa(id) {
         tarefasJson.splice(index, 1, tarefa)
         let tarefasString = JSON.stringify(tarefasJson)
         localStorage.setItem("tarefas", tarefasString)
-        renderizarTabela()
+        renderizarTabela();
+        renderizarToast("Atualizado com sucesso!");
     } else {
+        if (tarefaVazio || dataVazio) {
+            return
+        }
         let tarefa = {
             id: Math.floor((Math.random() * 10000) + 1),
             tarefa: inpTarefa.value,
@@ -132,19 +156,36 @@ function adicionarTarefa(id) {
         tarefasJson.push(tarefa)
         let tarefasString = JSON.stringify(tarefasJson)
         localStorage.setItem("tarefas", tarefasString)
-        renderizarTabela()
+        renderizarTabela();
+        renderizarToast("Cadastrado com sucesso!");
     }
 
     modoAtualizacao = false;
     inpTarefa.value = "";
     inpData.value = "";
-    
+
 }
 
 submit.addEventListener('click', (e) => {
     e.preventDefault();
 
     adicionarTarefa(idTarefaAtualizada);
-    renderizarTabela();
-    renderizarToast();
 });
+
+function campoTarefaVazio() {
+    spanTarefa.className = "span visible"
+}
+
+function campoDataVazio() {
+    spanData.className = "span visible"
+}
+
+inpTarefa.addEventListener('click', () => {
+    tarefaVazio = false
+    spanTarefa.className = "span hidden"
+})
+
+inpData.addEventListener('click', () => {
+    dataVazio = false
+    spanData.className = "span hidden"
+})
