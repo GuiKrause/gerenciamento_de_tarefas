@@ -21,11 +21,14 @@ let idTarefaAtualizada;
 let tarefaVazio = false
 let dataVazio = false
 
-renderizarTabela();
+if (tarefasJson.length > 0) {
+    renderizarTabela();   
+}
 
 function renderizarTabela() {
 
-    table.innerHTML = "";
+    if (tarefasJson.length > 0) {
+        table.innerHTML = "";
 
     qtdTarefas.textContent = `Quantidade de tarefas: ${quantidade_tarefas}`
 
@@ -88,7 +91,7 @@ function renderizarTabela() {
             let tarefasString = JSON.stringify(tarefasJson)
             localStorage.setItem("tarefas", tarefasString);
             quantidade_tarefas = tarefasJson.length
-            renderizarTabela();
+            renderizarTabela();   
             renderizarToast("Removido com sucesso!");
         })
 
@@ -111,6 +114,10 @@ function renderizarTabela() {
     })
 
     console.log(tarefasJson)
+    } else {
+        qtdTarefas.innerHTML = ""
+        table.innerHTML = "";
+    }
 }
 
 function renderizarToast(texto) {
