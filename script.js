@@ -6,7 +6,9 @@ const form = document.querySelector("#form");
 const submit = document.querySelector("#submit");
 const deletar = document.querySelector(".deletar");
 
-let tarefas = []
+// let tarefas = []
+
+let tarefasJson = JSON.parse(localStorage.getItem("tarefas")) || [];
 
 let modoAtualizacao = false
 
@@ -39,7 +41,7 @@ function renderizarTabela() {
     table.appendChild(trHead)
 
 
-    tarefas.forEach((e) => {
+    tarefasJson.forEach((e) => {
         let tr = document.createElement("tr");
         tr.className = "content"
 
@@ -73,8 +75,10 @@ function renderizarTabela() {
         // ------------------------------------
 
         deletar.addEventListener('click', (e) => {
-            let idLivroDeletado = tarefas.findIndex((t) => t.id == e.target.id)
-            tarefas.splice(idLivroDeletado, 1);
+            let idLivroDeletado = tarefasJson.findIndex((t) => t.id == e.target.id)
+            tarefasJson.splice(idLivroDeletado, 1);
+            let tarefasString = JSON.stringify(tarefasJson)
+            localStorage.setItem("tarefas", tarefasString);
             renderizarTabela();
         })
 
@@ -94,7 +98,7 @@ function renderizarTabela() {
         table.appendChild(tr);
     })
 
-    console.log(tarefas)
+    console.log(tarefasJson)
 }
 
 function renderizarToast() {
@@ -114,20 +118,27 @@ function adicionarTarefa(id) {
             tarefa: inpTarefa.value,
             data: inpData.value
         }
-        let index = tarefas.findIndex((e) => e.id == id);
-        tarefas.splice(index, 1, tarefa)
+        let index = tarefasJson.findIndex((e) => e.id == id);
+        tarefasJson.splice(index, 1, tarefa)
+        let tarefasString = JSON.stringify(tarefasJson)
+        localStorage.setItem("tarefas", tarefasString)
+        renderizarTabela()
     } else {
         let tarefa = {
             id: Math.floor((Math.random() * 10000) + 1),
             tarefa: inpTarefa.value,
             data: inpData.value
         }
-        tarefas.push(tarefa)
+        tarefasJson.push(tarefa)
+        let tarefasString = JSON.stringify(tarefasJson)
+        localStorage.setItem("tarefas", tarefasString)
+        renderizarTabela()
     }
 
     modoAtualizacao = false;
     inpTarefa.value = "";
     inpData.value = "";
+    
 }
 
 submit.addEventListener('click', (e) => {
