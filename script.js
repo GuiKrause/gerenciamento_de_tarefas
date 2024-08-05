@@ -93,6 +93,8 @@ function renderizarTabela() {
         })
 
         editar.addEventListener('click', (f) => {
+            spanTarefa.className = "span hidden"
+            spanData.className = "span hidden"
             modoAtualizacao = true;
             idTarefaAtualizada = f.target.id;
             inpTarefa.value = e.tarefa;
